@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Мотивація персоналу: практикум на 30–40 хвилин</title>
+<style>
+:root{
+  --bg:#F3F6F9; --surface:#FFFFFF; --ink:#16212E; --muted:#5A6878; --line:#D5DDE6;
+  --accent:#0E7C86; --accent-ink:#FFFFFF; --warn:#A85A12; --good:#1F7A4D; --bad:#B3392F;
+  --bar-bg:#E3EAF0; --soft:#E7F3F4; color-scheme: light; box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1620; --surface:#16212E; --ink:#E8EEF4; --muted:#9BAABB; --line:#2A3A4D;
+    --accent:#4FC3CC; --accent-ink:#06222A; --warn:#E8A15D; --good:#58C48D; --bad:#F08A80;
+    --bar-bg:#243447; --soft:#14313A; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1620; --surface:#16212E; --ink:#E8EEF4; --muted:#9BAABB; --line:#2A3A4D;
+  --accent:#4FC3CC; --accent-ink:#06222A; --warn:#E8A15D; --good:#58C48D; --bad:#F08A80;
+  --bar-bg:#243447; --soft:#14313A; color-scheme: dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:740px;margin:0 auto;padding:26px 18px 60px}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.2;margin:0 0 .5em}
+h1{font-size:2rem} h2{font-size:1.4rem;margin-top:1.2em} h3{font-size:1.1rem}
+.lead{color:var(--muted);margin:0 0 14px;max-width:62ch}
+.total{font-size:.92rem;color:var(--muted);margin:0 0 16px}
+.steps{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:16px;border-bottom:1px solid var(--line)}
+.steps button{flex:0 0 auto;appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--muted);font:inherit;font-size:.9rem;font-weight:600;padding:7px 11px;border-radius:8px;cursor:pointer;text-align:left;line-height:1.25}
+.steps button small{display:block;font-weight:400;font-size:.78rem}
+.steps button[aria-selected="true"]{color:var(--ink);border-color:var(--accent);box-shadow:inset 0 -3px 0 var(--accent)}
+.steps button.done{color:var(--ink)}
+.steps button.done span::after{content:" ✓";color:var(--good)}
+button:focus-visible,input:focus-visible+label,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.note{background:var(--soft);border-left:4px solid var(--accent);padding:10px 14px;margin:0 0 18px;font-size:.95rem}
+.q{border:0;padding:14px 0;margin:0;border-bottom:1px solid var(--line)}
+.q legend{padding:0;margin-bottom:9px;font-weight:600;max-width:64ch}
+.scale{display:flex;gap:8px;flex-wrap:wrap}
+.scale input{position:absolute;opacity:0;width:1px;height:1px}
+.scale label{min-width:46px;text-align:center;padding:8px 0;border:1px solid var(--line);border-radius:8px;background:var(--surface);cursor:pointer;font-weight:600}
+.scale input:checked+label{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.hint{font-size:.88rem;color:var(--muted);margin:4px 0 12px}
+.bar{display:grid;gap:4px;margin:12px 0}
+.bar .top{display:flex;justify-content:space-between;gap:12px;font-weight:600}
+.bar .track{height:14px;background:var(--bar-bg);border-radius:7px;overflow:hidden}
+.bar .fill{height:100%;background:var(--accent);border-radius:7px}
+.bar.low .fill{background:var(--warn)}
+.btn{appearance:none;border:0;background:var(--accent);color:var(--accent-ink);font:inherit;font-weight:700;padding:11px 20px;border-radius:8px;cursor:pointer}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:none;color:var(--ink);border:1px solid var(--line)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:14px 0}
+.dossier{border-left:4px solid var(--warn)}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+td,th{padding:7px 4px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+td.v{width:48px;font-weight:700;text-align:right}
+blockquote{margin:10px 0;padding:2px 0 2px 14px;border-left:3px solid var(--line)}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:8px;margin:8px 0;background:var(--surface);cursor:pointer}
+.opt input{margin-top:5px;accent-color:var(--accent)}
+.fb{margin:8px 0;padding:10px 12px;border-radius:8px;background:var(--surface);border:1px solid var(--line)}
+.fb .tag{font-weight:700}
+.fb.good .tag{color:var(--good)} .fb.bad .tag{color:var(--bad)} .fb.mid .tag{color:var(--warn)}
+.progress{color:var(--muted);font-size:.9rem;margin:0 0 6px}
+.score{font-family:Georgia,serif;font-size:2.2rem;margin:0}
+pre{white-space:pre-wrap;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px;font:inherit;font-size:.95rem}
+[hidden]{display:none!important}
+@media (max-width:480px){h1{font-size:1.6rem}.scale label{min-width:42px}}
+@media (prefers-reduced-motion:no-preference){.fill{transition:width .5s ease}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Мотивація персоналу: практикум</h1>
+  <p class="lead">Шість блоків за матеріалом лекції: від самоспостереження до розв’язання кейсу. Блоки можна проходити в будь-якому порядку й навіть у різні дні.</p>
+  <p class="total" id="overall"></p>
+  <div class="steps" id="steps" role="tablist" aria-label="Блоки практикуму"></div>
+  <div id="panels"></div>
+</div>
+
+<script>
+(function(){
+  var R = {};            /* результати блоків */
+  var order = [], panels = {}, navBtns = {};
+
+  /* ---------- Дані блоків ---------- */
+  var BLOCKS = [
+   {id:"b1", nav:"1. Мотиви", min:6, type:"likert", title:"Що мене мотивує",
+    intro:"Оцініть, наскільки твердження про вас: 1 — зовсім ні, 5 — цілком так. Відповідайте першою думкою.",
+    cats:{A:"Досягнення і розвиток",B:"Приналежність і підтримка",C:"Автономія і вплив",D:"Умови і справедливість"},
+    items:[
+     ["A","Мені важливо, щоб у роботі я постійно вчився чогось нового."],
+     ["B","Для мене важливо, щоб у колективі була доброзичлива атмосфера."],
+     ["C","Я працюю краще, коли сам вирішую, як виконати завдання."],
+     ["D","Для мене важливо, щоб оплата відповідала моєму внеску."],
+     ["A","Я охоче беруся за складні завдання, навіть якщо ризикую помилитися."],
+     ["B","Мені легше працювати, коли поруч є людина, до якої можна звернутися по допомогу."],
+     ["C","Мені важливо впливати на рішення, які стосуються моєї роботи."],
+     ["D","Стабільність і зрозумілі правила для мене важливіші за гучні досягнення."],
+     ["A","Я хотів би мати чіткий план професійного зростання."],
+     ["B","Я цінюю спільні результати команди не менше, ніж особисті."],
+     ["C","Постійний контроль мене виснажує."],
+     ["D","Комфортні умови праці суттєво впливають на моє бажання працювати."],
+     ["A","Мене надихає, коли я бачу, що мої навички зростають."],
+     ["B","Мені важливо відчувати, що колеги мене поважають."],
+     ["C","Я охоче беру на себе відповідальність за результат."],
+     ["D","Мене сильно демотивує, коли навантаження чи премії розподілені нерівномірно."],
+     ["A","Мене приваблюють складні проєкти, у яких можна проявити себе."],
+     ["B","Я охоче допомагаю колегам, навіть якщо це не моє завдання."],
+     ["C","Мені подобається пропонувати власні ідеї й бачити, що їх використовують."],
+     ["D","Мені важливо знати чіткі критерії, за якими оцінюють мою роботу."],
+     ["A","Мені подобається отримувати конкретний результат, який можна виміряти."],
+     ["B","Мені комфортніше, коли стосунки з колегами теплі, а не суто формальні."],
+     ["C","Мені важливо мати право голосу, коли змінюються правила роботи."],
+     ["D","Мені потрібне відчуття, що робочі домовленості дотримуються."]
+    ],
+    texts:{
+     A:"Вас найбільше заряджають нові навички, складні завдання й видимий прогрес. У термінах лекції це мотиватори за Герцбергом і потреба в досягненнях за МакКлелландом. Таких людей демотивують застій і відсутність перспектив.",
+     B:"Для вас важливі люди поруч: доброзичливий колектив, підтримка, повага колег. У термінах лекції це потреба приналежності за МакКлелландом і психологічний клімат як чинник залученості. Демотивують конфлікти й ізоляція.",
+     C:"Ви працюєте найкраще, коли самі вирішуєте, як діяти, і впливаєте на рішення. У термінах лекції це потреба впливу за МакКлелландом та автономія як чинник залученості. Демотивує надмірний контроль.",
+     D:"Для вас важливі справедлива оплата, зрозумілі правила й комфортні умови. У термінах лекції це гігієнічні чинники за Герцбергом і справедливість за Адамсом. Їхня відсутність демотивує, але самі по собі вони захопленості не створюють."
+    }},
+   {id:"b2", nav:"2. Навчання", min:3, type:"likert", title:"Мій досвід навчання",
+    intro:"Подумайте про останні кілька тижнів навчання. Наскільки кожне твердження про вас? 1 — зовсім ні, 5 — цілком так.",
+    cats:{E:"Енергія",S:"Значущість і цікавість",Z:"Зануреність"},
+    items:[
+     ["E","Зазвичай мені вистачає енергії на навчальні завдання."],
+     ["S","Я розумію, навіщо мені потрібен навчальний матеріал."],
+     ["Z","Під час цікавого завдання я забуваю про час."],
+     ["E","Навіть напружений день не забирає в мене бажання вчитися."],
+     ["S","Мені цікаво те, що я вивчаю."],
+     ["Z","Мені вдається не відволікатися на телефон під час навчання."],
+     ["E","Мені легко починати роботу над завданням."],
+     ["S","Я пишаюся своїми навчальними досягненнями."],
+     ["Z","Мені подобається працювати над складними завданнями."],
+     ["E","Я можу довго зосереджено працювати над важливим завданням."],
+     ["S","Інколи мені хочеться дізнатися більше, ніж вимагає програма."],
+     ["Z","Після заняття мені часто хочеться продовжити самому."]
+    ], bands:true,
+    note:"Це самооцінка за вашими відчуттями, а не вимірювання залученості за валідизованою шкалою. Залученість — це не те саме, що задоволеність: можна бути задоволеним умовами й при цьому не проявляти ініціативи."},
+   {id:"b3", nav:"3. Демотивація", min:3, type:"causes", title:"Що знижує мою мотивацію",
+    intro:"Це вісім психологічних причин демотивації з лекції. Оцініть, наскільки кожна з них про вашу ситуацію останнім часом: 1 — зовсім ні, 5 — дуже.",
+    items:[
+     ["Відсутність визнання","Мої зусилля залишаються непоміченими.","Помічайте й називайте досягнення; просіть зворотний зв’язок не лише про помилки."],
+     ["Несправедливість","Оцінювання чи навантаження здаються мені нерівними.","Запитайте про критерії оцінювання й розподіл; запропонуйте прозорі правила."],
+     ["Надмірний контроль","Мене постійно контролюють, і мені бракує самостійності.","Домовтеся про зону, де ви вирішуєте самі, і про домовлений формат звітності."],
+     ["Відсутність перспектив","Я не бачу, куди приведе мене це навчання чи робота.","Складіть індивідуальний план розвитку; знайдіть наставника чи проєкт."],
+     ["Конфлікти в колективі","Напружені стосунки заважають мені працювати.","Проговоріть розбіжність за допомогою формули «Коли… я… бо… чи могли б»; за потреби — медіація."],
+     ["Тривале перевантаження","Я відчуваю тривале перевантаження й втрату інтересу.","Перегляньте навантаження, плануйте відпочинок; якщо стан триває тижнями, поговоріть із фахівцем."],
+     ["Нечіткі цілі","Мені не зрозуміло, чого від мене очікують і за якими критеріями оцінюють.","Попросіть чітко сформулювати очікування, терміни й критерії."],
+     ["Невідповідність цінностям","Те, що я роблю, суперечить моїм інтересам чи цінностям.","Визначте, що саме не збігається, і чи можна змінити завдання чи напрям."]
+    ]},
+   {id:"b4", nav:"4. Ресурс", min:2, type:"likert", title:"Ресурс і баланс",
+    intro:"Подумайте про свій звичайний тиждень. 1 — зовсім ні, 5 — цілком так.",
+    cats:{R:"Ресурс і баланс"},
+    items:[
+     ["R","Я встигаю відпочивати між навчальними завданнями."],
+     ["R","Зазвичай я маю час на особисте життя."],
+     ["R","У вихідні мені вдається відключитися від навчання чи роботи."],
+     ["R","Моє навантаження переважно реалістичне."],
+     ["R","Я можу попросити допомоги, коли мені важко."],
+     ["R","Більшість днів я висипаюся."],
+     ["R","У мене є принаймні одна активність, яка мене відновлює."],
+     ["R","Я вмію казати «ні», коли навантаження забагато."]
+    ], balance:true,
+    note:"Це не тест на вигорання й не діагностика. Баланс між роботою та особистим життям — один із чинників залученості з лекції."},
+   {id:"b5", nav:"5. Ситуації", min:6, type:"mcq", title:"Ситуації керівника",
+    intro:"Оберіть найвлучніше пояснення чи рішення. Після вибору з’явиться розбір.",
+    items:[
+     {q:"В офісі замінили меблі й кондиціонери, але залученість працівників не зросла. Чому?",
+      o:[["Умови праці — гігієнічні чинники: вони запобігають незадоволенню, але самі не створюють мотивації (Герцберг).",1],["Працівники не цінують турботи про них.",0],["Умови були погані ще до змін.",0]],
+      e:"За Герцбергом, гігієнічні чинники (умови, оплата) усувають незадоволення, а мотивують визнання, розвиток і відповідальність."},
+     {q:"Двоє працівників виконують однакову роботу, але лише один отримав премію. Що саме найімовірніше демотивує другого?",
+      o:[["Відчуття нерівного співвідношення внеску й винагороди (теорія справедливості Адамса).",1],["Низький рівень потреби в досягненнях.",0],["Занадто складні цілі.",0]],
+      e:"Адамс: люди порівнюють своє співвідношення «внесок — винагорода» із співвідношенням інших. Нерівність сприймається як несправедливість."},
+     {q:"Керівник просить команду «працювати краще», але результат не змінюється. Що за теорією Локка допоможе найбільше?",
+      o:[["Конкретні, достатньо складні, але досяжні цілі зі зворотним зв’язком.",1],["Загальні заохочення й побажання успіху.",0],["Прибрати будь-які цілі, щоб не тиснути.",0]],
+      e:"Локк: конкретні й складні цілі зі зворотним зв’язком дають кращі результати, ніж розмиті на кшталт «роби все можливе»."},
+     {q:"Працівник не докладає зусиль, бо не вірить, що вони приведуть до результату й винагороди. Що зробити?",
+      o:[["Зміцнити зв’язок «зусилля → результат → винагорода»: ресурси, навчання, прозорі критерії (Врум).",1],["Збільшити контроль.",0],["Просто підвищити оплату всім.",0]],
+      e:"Врум: мотивація залежить від очікування, що зусилля дадуть результат, результат — винагороду, і від цінності цієї винагороди."},
+     {q:"Працівнику з високою потребою в досягненнях (МакКлелланд) потрібно доручити завдання. Яке підійде найкраще?",
+      o:[["Складне, але виконуване завдання з вимірюваним результатом і швидким зворотним зв’язком.",1],["Рутинне завдання без оцінки результату.",0],["Завдання, де результат залежить виключно від колективу.",0]],
+      e:"Для потреби в досягненнях важливі виклик, помірний ризик і видимий результат із зворотним зв’язком."},
+     {q:"Працівник має безпечні умови й гідну оплату. Що за ієрархією Маслоу стає для нього важливішим?",
+      o:[["Потреби в належності, повазі й самореалізації: визнання, розвиток, змістовні завдання.",1],["Ще більша оплата й безпека.",0],["Нічого, потреби вже закриті.",0]],
+      e:"За Маслоу після базових потреб актуалізуються соціальні, повага й самореалізація. На практиці це визнання, розвиток, автономія."}
+    ]},
+   {id:"b6", nav:"6. Кейс", min:10, type:"case", title:"Кейс «Сервіс+»"}
+  ];
+
+  /* ---------- Навігація ---------- */
+  var stepsEl = document.getElementById("steps"), panelsEl = document.getElementById("panels"), overall = document.getElementById("overall");
+  var totalMin = BLOCKS.reduce(function(a,b){return a+b.min;},0) + 2;
+  function updateOverall(){
+    var n = BLOCKS.filter(function(b){return R[b.id];}).length;
+    overall.textContent = "Орієнтовний час: близько "+totalMin+" хв. Пройдено блоків: "+n+" з "+BLOCKS.length+".";
+    BLOCKS.forEach(function(b){ navBtns[b.id].classList.toggle("done", !!R[b.id]); });
+  }
+  function show(id){
+    Object.keys(panels).forEach(function(k){ panels[k].hidden = k!==id; navBtns[k].setAttribute("aria-selected", k===id); });
+    if(id==="sum") renderSummary();
+    window.scrollTo({top:0});
+  }
+  BLOCKS.concat([{id:"sum",nav:"Підсумок",min:2}]).forEach(function(b){
+    var btn = document.createElement("button"); btn.setAttribute("role","tab"); btn.setAttribute("aria-selected","false");
+    btn.innerHTML = "<span>"+b.nav+"</span><small>≈ "+b.min+" хв</small>";
+    btn.addEventListener("click", function(){ show(b.id); });
+    stepsEl.appendChild(btn); navBtns[b.id]=btn;
+    var p = document.createElement("section"); p.setAttribute("role","tabpanel"); p.hidden = true; panelsEl.appendChild(p); panels[b.id]=p;
+    order.push(b.id);
+  });
+  function nextOf(id){ var i = order.indexOf(id); return order[i+1]; }
+  function nextBtn(id, container){
+    var nx = nextOf(id); if(!nx) return;
+    var b = document.createElement("button"); b.className="btn"; b.textContent = nx==="sum" ? "До підсумку" : "Наступний блок";
+    b.addEventListener("click", function(){ show(nx); });
+    var r = document.createElement("div"); r.className="row"; r.appendChild(b); container.appendChild(r);
+  }
+  function el(html){ var d=document.createElement("div"); d.innerHTML=html; return d; }
+
+  /* ---------- Likert-блоки (b1, b2, b4) ---------- */
+  function bar(name,val,min,max,low){
+    var pct = Math.round((val-min)/(max-min)*100);
+    return "<div class=\"bar"+(low?" low":"")+"\"><div class=\"top\"><span>"+name+"</span><span>"+val+"</span></div><div class=\"track\" role=\"img\" aria-label=\""+name+": "+val+" з "+max+"\"><div class=\"fill\" style=\"width:"+pct+"%\"></div></div></div>";
+  }
+  function buildLikert(b, panel){
+    panel.innerHTML = "<h2>"+b.title+"</h2><p class=\"hint\">≈ "+b.min+" хв, "+b.items.length+" тверджень</p>"+(b.note?"<p class=\"note\">"+b.note+"</p>":"<p class=\"note\">Це навчальний інструмент для рефлексії, а не психодіагностична методика. Результати нікуди не надсилаються й не зберігаються.</p>")+"<p class=\"hint\">"+b.intro+"</p>";
+    var form = document.createElement("form"); form.onsubmit=function(){return false;}; panel.appendChild(form);
+    var ans = {};
+    var prog = document.createElement("p"); prog.className="progress"; prog.setAttribute("aria-live","polite");
+    var btn = document.createElement("button"); btn.className="btn"; btn.textContent="Показати результат"; btn.disabled=true;
+    var res = document.createElement("div"); res.hidden=true; res.setAttribute("aria-live","polite");
+    b.items.forEach(function(it,i){
+      var fs=document.createElement("fieldset"); fs.className="q";
+      var lg=document.createElement("legend"); lg.textContent=(i+1)+". "+it[1]; fs.appendChild(lg);
+      var sc=document.createElement("div"); sc.className="scale";
+      for(var v=1;v<=5;v++){ (function(v){
+        var id=b.id+"_"+i+"_"+v, inp=document.createElement("input"); inp.type="radio"; inp.name=b.id+"_"+i; inp.id=id; inp.value=v;
+        inp.addEventListener("change", function(){ ans[i]=v; upd(); });
+        var lb=document.createElement("label"); lb.htmlFor=id; lb.textContent=v; sc.appendChild(inp); sc.appendChild(lb);
+      })(v); }
+      fs.appendChild(sc); form.appendChild(fs);
+    });
+    function upd(){ var n=Object.keys(ans).length; prog.textContent="Відповіли: "+n+" з "+b.items.length; btn.disabled = n<b.items.length; }
+    upd();
+    panel.appendChild(prog); var row=document.createElement("div"); row.className="row"; row.appendChild(btn); panel.appendChild(row); panel.appendChild(res);
+    btn.addEventListener("click", function(){
+      var cats = Object.keys(b.cats), s={}; cats.forEach(function(k){ s[k]=0; });
+      b.items.forEach(function(it,i){ s[it[0]] += ans[i]; });
+      var per = b.items.length/cats.length, min = per, max = per*5, html="", sum="";
+      if(b.id==="b1"){
+        var mx = Math.max.apply(null, cats.map(function(k){return s[k];}));
+        var top = cats.filter(function(k){return s[k]===mx;});
+        html = "<h2>Ваш профіль</h2><p class=\"hint\">Сума балів за категорією: від "+min+" до "+max+".</p>";
+        cats.forEach(function(k){ html += bar(b.cats[k],s[k],min,max); });
+        html += "<div class=\"card\"><h3>"+(top.length>1?"Найсильніші категорії":"Найсильніша категорія")+": "+top.map(function(k){return b.cats[k];}).join("; ")+"</h3>"+top.map(function(k){return "<p>"+b.texts[k]+"</p>";}).join("")+"</div>";
+        sum = "Мотиви: "+cats.map(function(k){return b.cats[k]+" "+s[k];}).join("; ")+".";
+        R[b.id] = {sum:sum, top:top.map(function(k){return b.cats[k];})};
+      } else if(b.bands){
+        var band = function(v){ var p=(v-min)/(max-min); return p<0.34?"нижче середнього":(p<0.67?"середній рівень":"високий рівень"); };
+        html = "<h2>Результат</h2><p class=\"hint\">Сума балів за шкалою: від "+min+" до "+max+". Рівні орієнтовні й не є нормами.</p>";
+        cats.forEach(function(k){ html += bar(b.cats[k]+" · "+band(s[k]),s[k],min,max,(s[k]-min)/(max-min)<0.34); });
+        html += "<div class=\"card\"><p>Подивіться, яка шкала в вас найнижча, і подумайте, який чинник із лекції (визнання, автономія, перспективи, цілі) міг би її підсилити.</p></div>";
+        sum = "Навчання: "+cats.map(function(k){return b.cats[k]+" — "+band(s[k]);}).join("; ")+".";
+        R[b.id] = {sum:sum};
+      } else if(b.balance){
+        var total = s.R, lowItems = b.items.map(function(it,i){return [ans[i],it[1]];}).filter(function(x){return x[0]<=2;}).map(function(x){return x[1].replace(/\.$/,"");});
+        var lvl = total>=32?"ресурс переважно збалансований":(total>=20?"є зони, на які варто звернути увагу":"варто подбати про баланс і відновлення");
+        html = "<h2>Результат</h2>"+bar("Ресурс і баланс · "+lvl,total,8,40,total<20)+
+          "<div class=\"card\"><p>"+(lowItems.length?"Зони уваги (оцінки 1–2): "+lowItems.join("; ")+".":"Жодне твердження не отримало оцінки 1–2.")+"</p>"+
+          "<p class=\"hint\">Якщо відчуття перевантаження тримається тижнями, поговоріть із психологом. Безкоштовна цілодобова лінія психологічної підтримки «Людина в біді»: 0 800 210 160.</p></div>";
+        sum = "Ресурс і баланс: "+total+" з 40 ("+lvl+").";
+        R[b.id] = {sum:sum};
+      }
+      html += "<div class=\"row\"><button class=\"btn ghost\" data-act=\"redo\">Пройти ще раз</button></div>";
+      res.innerHTML = html; res.hidden=false; updateOverall();
+      res.querySelector("[data-act=redo]").addEventListener("click", function(){ delete R[b.id]; panel.innerHTML=""; buildLikert(b,panel); updateOverall(); window.scrollTo({top:0}); });
+      nextBtn(b.id, res);
+      res.scrollIntoView({behavior:"smooth",block:"start"});
+    });
+  }
+
+  /* ---------- Блок 3: причини демотивації ---------- */
+  function buildCauses(b, panel){
+    panel.innerHTML = "<h2>"+b.title+"</h2><p class=\"hint\">≈ "+b.min+" хв, "+b.items.length+" тверджень</p><p class=\"note\">Це навчальний інструмент для рефлексії. Результати нікуди не надсилаються й не зберігаються.</p><p class=\"hint\">"+b.intro+"</p>";
+    var form=document.createElement("form"); form.onsubmit=function(){return false;}; panel.appendChild(form);
+    var ans={}, prog=document.createElement("p"); prog.className="progress";
+    var btn=document.createElement("button"); btn.className="btn"; btn.textContent="Показати результат"; btn.disabled=true;
+    var res=document.createElement("div"); res.hidden=true;
+    b.items.forEach(function(it,i){
+      var fs=document.createElement("fieldset"); fs.className="q";
+      var lg=document.createElement("legend"); lg.textContent=(i+1)+". "+it[0]+": «"+it[1]+"»"; fs.appendChild(lg);
+      var sc=document.createElement("div"); sc.className="scale";
+      for(var v=1;v<=5;v++){ (function(v){
+        var id=b.id+"_"+i+"_"+v, inp=document.createElement("input"); inp.type="radio"; inp.name=b.id+"_"+i; inp.id=id; inp.value=v;
+        inp.addEventListener("change", function(){ ans[i]=v; upd(); });
+        var lb=document.createElement("label"); lb.htmlFor=id; lb.textContent=v; sc.appendChild(inp); sc.appendChild(lb);
+      })(v); }
+      fs.appendChild(sc); form.appendChild(fs);
+    });
+    function upd(){ var n=Object.keys(ans).length; prog.textContent="Відповіли: "+n+" з "+b.items.length; btn.disabled=n<b.items.length; }
+    upd();
+    panel.appendChild(prog); var row=document.createElement("div"); row.className="row"; row.appendChild(btn); panel.appendChild(row); panel.appendChild(res);
+    btn.addEventListener("click", function(){
+      var arr=b.items.map(function(it,i){return {n:it[0],a:it[2],v:ans[i]};}).sort(function(x,y){return y.v-x.v;});
+      var html="<h2>Ваші найсильніші чинники</h2><p class=\"hint\">Бал показує, наскільки причина зараз про вас: 1–5.</p>";
+      arr.forEach(function(x){ html+=bar(x.n,x.v,1,5,false); });
+      var top=arr.filter(function(x){return x.v>=4;}).slice(0,3);
+      if(!top.length) top=arr.slice(0,2);
+      html+="<div class=\"card\"><h3>Що можна зробити</h3>"+top.map(function(x){return "<p><strong>"+x.n+".</strong> "+x.a+"</p>";}).join("")+"</div>";
+      var exh=ans[5];
+      if(exh>=4) html+="<p class=\"note\">Ви високо оцінили тривале перевантаження. Якщо це відчуття триває тижнями, поговоріть із психологом. Безкоштовна цілодобова лінія «Людина в біді»: 0 800 210 160.</p>";
+      html+="<div class=\"row\"><button class=\"btn ghost\" data-act=\"redo\">Пройти ще раз</button></div>";
+      res.innerHTML=html; res.hidden=false;
+      R[b.id]={sum:"Що знижує мою мотивацію найбільше: "+top.map(function(x){return x.n+" ("+x.v+")";}).join("; ")+".", top:top.map(function(x){return x.n;})};
+      updateOverall();
+      res.querySelector("[data-act=redo]").addEventListener("click", function(){ delete R[b.id]; panel.innerHTML=""; buildCauses(b,panel); updateOverall(); window.scrollTo({top:0}); });
+      nextBtn(b.id,res); res.scrollIntoView({behavior:"smooth",block:"start"});
+    });
+  }
+
+  /* ---------- Блок 5: ситуації ---------- */
+  function buildMcq(b, panel){
+    panel.innerHTML="<h2>"+b.title+"</h2><p class=\"hint\">≈ "+b.min+" хв, "+b.items.length+" ситуацій</p><p class=\"hint\">"+b.intro+"</p>";
+    var score=0, done=0, fin=document.createElement("div");
+    b.items.forEach(function(it,qi){
+      var card=el("<div class=\"card\"><p class=\"progress\">Ситуація "+(qi+1)+" з "+b.items.length+"</p><h3>"+it.q+"</h3><div class=\"opts\"></div><div class=\"fbk\" aria-live=\"polite\"></div></div>");
+      var opts=card.querySelector(".opts"), fbk=card.querySelector(".fbk");
+      it.o.forEach(function(op){
+        var lab=document.createElement("label"); lab.className="opt";
+        lab.innerHTML="<input type=\"radio\" name=\"m"+qi+"\"><span>"+op[0]+"</span>";
+        lab.querySelector("input").addEventListener("change", function(){
+          opts.querySelectorAll("input").forEach(function(i){ i.disabled=true; });
+          score += op[1]; done++;
+          fbk.innerHTML="<div class=\"fb "+(op[1]?"good":"bad")+"\"><span class=\"tag\">"+(op[1]?"Так.":"Не зовсім.")+"</span> "+it.e+"</div>";
+          if(done===b.items.length){
+            R[b.id]={sum:"Ситуації керівника: "+score+" з "+b.items.length+".", score:score};
+            fin.innerHTML="<div class=\"card\"><h3>Підсумок блоку</h3><p class=\"score\">"+score+" з "+b.items.length+"</p><p class=\"hint\">Кожна ситуація відповідала теорії з лекції: Герцберг, Адамс, Локк, Врум, МакКлелланд, Маслоу.</p></div>";
+            nextBtn(b.id,fin); updateOverall(); fin.scrollIntoView({behavior:"smooth",block:"start"});
+          }
+        });
+        opts.appendChild(lab);
+      });
+      panel.appendChild(card);
+    });
+    panel.appendChild(fin);
+    var rr=document.createElement("div"); rr.className="row";
+    var redo=document.createElement("button"); redo.className="btn ghost"; redo.textContent="Пройти ще раз";
+    redo.addEventListener("click", function(){ delete R[b.id]; panel.innerHTML=""; buildMcq(b,panel); updateOverall(); window.scrollTo({top:0}); });
+    rr.appendChild(redo); panel.appendChild(rr);
+  }
+
+  /* ---------- Блок 6: кейс ---------- */
+  function buildCase(b, panel){
+    panel.innerHTML="<h2>"+b.title+"</h2><p class=\"hint\">≈ "+b.min+" хв, три кроки</p>";
+    var intro=el("<div class=\"card\"><h3>Ситуація</h3><p>Ви — спеціаліст з управління персоналом. До вас звернулася Олена, яка шість місяців тому очолила центр підтримки клієнтів інтернет-провайдера «Сервіс+». За цей час із команди з 11 операторів звільнилися троє, середній час відповіді клієнту зріс із 2 до 4,5 хвилини, а кількість скарг клієнтів збільшилася приблизно на третину.</p><p class=\"hint\">Усі дані в кейсі навчальні, вигадані.</p></div>");
+    panel.appendChild(intro);
+    var stage=document.createElement("div"); panel.appendChild(stage);
+    var sc={s1:0,s2:0,s3:0};
+    var S1=[
+      ["Оголосити операторам догану за зниження показників.",0,"Причини ще не з’ясовано, а догана посилює контроль і відчуття несправедливості: це самі ті чинники, які можуть демотивувати."],
+      ["Зібрати дані: анонімне анкетування та індивідуальні співбесіди.",2,"Саме з цього починають. Анкетування й співбесіди — методи виявлення причин демотивації з лекції. Зауважте: у групі з 8 людей анонімність складно гарантувати, тож варто заздалегідь пояснити, як використають дані."],
+      ["Підвищити премії всім операторам.",0,"Гроші — лише один чинник, і без діагностики невідомо, чи вони тут проблема. Матеріальні стимули слід поєднувати з нематеріальними."],
+      ["Почекати, поки ситуація стабілізується.",0,"Тривале очікування коштує людей: троє вже пішли. Демотивація сама не минає."]];
+    var SURVEY=[["Розумію цілі своєї роботи",3.9],["Умови праці комфортні",4.1],["Оплата відповідає моєму внеску",3.4],["Мене визнають за досягнення",2.1],["Навантаження й чергування розподілені справедливо",2.4],["Бачу перспективи розвитку",2.0],["Керівниця довіряє мені самостійність",2.2],["Мені комфортно в колективі",3.2]];
+    var QUOTES=["«Минулого місяця я закрила найбільше звернень у зміні. Мені написали тільки про помилку в одному з них.»","«Вечірні й вихідні чергування розподіляють так, що одні виходять частіше за інших.»","«Я тут два роки й не знаю, що буде далі: навчань не було вже рік.»","«Навіть у простих випадках я мушу чекати погодження, замість того щоб вирішити сама.»"];
+    var S2=[["Відсутність визнання","good","Підтверджується: «мене визнають» — 2,1, а в співбесіді згадано лише зауваження про помилки."],["Несправедливість","good","Підтверджується: справедливість розподілу — 2,4, і працівники прямо кажуть про нерівні чергування."],["Надмірний контроль","good","Підтверджується: довіра до самостійності — 2,2; щоденні перевірки й погодження навіть простих випадків."],["Відсутність перспектив розвитку","good","Підтверджується: перспективи — 2,0; навчань не було рік."],["Відсутність чітких цілей","bad","Не підтверджується: розуміння цілей — 3,9, це один із найсильніших показників."],["Незадовільні умови праці","bad","Не підтверджується: умови — 4,1, найвищий показник."],["Конфлікти в колективі","mid","Частково: є суперечка двох операторів, але комфорт у колективі 3,2 — це не головна причина."],["Професійне вигорання","mid","Недостатньо даних: анкета цього не вимірює, а вигорання потребує окремої оцінки."]];
+    var S3=[["Запровадити регулярне визнання успіхів і зворотний зв’язок не лише про помилки.","good","Влучно: відповідає на найнижчий показник — визнання."],["Зробити графік чергувань і навантаження прозорим.","good","Влучно: прямо знімає несправедливість."],["Скласти індивідуальні плани розвитку, запровадити наставництво й навчання.","good","Влучно: відповідає на відсутність перспектив."],["Дати більше автономії: типові випадки оператори вирішують самі за чіткими правилами.","good","Влучно: зменшує надмірний контроль і підвищує залученість."],["Повторити опитування через 3 місяці, щоб побачити зміни.","good","Влучно: без повторного виміру неможливо оцінити результат."],["Підвищити оплату всім на 20%.","bad","Оплата (3,4) не найслабший показник; гроші не розв’язують відсутність визнання й перспектив."],["Посилити контроль: перевіряти всі розмови.","bad","Це загострить головну проблему — надмірний контроль."],["Провести командну вечірку.","mid","Приємно, але не вирішує виявлених причин."]];
+
+    function st1(){
+      stage.innerHTML=""; sc={s1:0,s2:0,s3:0};
+      var box=el("<div class=\"card\"><p class=\"progress\">Крок 1 з 3</p><h3>З чого ви почнете?</h3><div class=\"o\"></div><div class=\"f\" aria-live=\"polite\"></div></div>"); stage.appendChild(box);
+      var o=box.querySelector(".o"), f=box.querySelector(".f");
+      S1.forEach(function(op,i){ var l=document.createElement("label"); l.className="opt"; l.innerHTML="<input type=\"radio\" name=\"c1\" value=\""+i+"\"><span>"+op[0]+"</span>"; o.appendChild(l); });
+      var go=document.createElement("button"); go.className="btn"; go.textContent="Перевірити"; go.disabled=true; o.parentNode.insertBefore(go,f);
+      o.addEventListener("change", function(){ go.disabled=false; });
+      go.addEventListener("click", function(){
+        var sel=box.querySelector("input[name=c1]:checked"); if(!sel) return;
+        var op=S1[+sel.value]; sc.s1=op[1];
+        f.innerHTML="<div class=\"fb "+(op[1]?"good":"bad")+"\"><span class=\"tag\">"+(op[1]?"Так":"Ні")+".</span> "+op[2]+"</div><p>Припустімо, дані зібрано. Ось результати.</p>";
+        o.querySelectorAll("input").forEach(function(i){i.disabled=true;}); go.hidden=true;
+        var nx=document.createElement("button"); nx.className="btn"; nx.textContent="Подивитися дані"; f.appendChild(nx); nx.addEventListener("click", st2);
+      });
+    }
+    function st2(){
+      stage.innerHTML="";
+      var d="<div class=\"card dossier\"><h3>Досьє: результати збору даних</h3><p class=\"hint\">Анкетування, 8 операторів, шкала 1–5.</p><table>";
+      SURVEY.forEach(function(r){ var low=r[1]<2.7; d+="<tr><td>"+r[0]+"</td><td class=\"v\">"+String(r[1]).replace(".",",")+"</td></tr><tr><td colspan=\"2\" style=\"border:0;padding:0 0 8px\"><div class=\"bar"+(low?" low":"")+"\" style=\"margin:0\"><div class=\"track\"><div class=\"fill\" style=\"width:"+Math.round((r[1]-1)/4*100)+"%\"></div></div></div></td></tr>"; });
+      d+="</table><h3 style=\"margin-top:1em\">Фрагменти співбесід</h3>"+QUOTES.map(function(q){return "<blockquote>"+q+"</blockquote>";}).join("")+"<p><strong>Інші факти.</strong> Олена щодня вибірково перевіряє розмови й надсилає виправлення в чат, а про успіхи в чаті не пишуть. Між двома операторами триває суперечка через чергування.</p></div>";
+      stage.appendChild(el(d));
+      var box=el("<div class=\"card\"><p class=\"progress\">Крок 2 з 3</p><h3>Які причини демотивації підтверджують дані?</h3><p class=\"hint\">Оберіть усі, які справді видно в досьє. Хибний вибір знімає бал.</p><div class=\"o\"></div><div class=\"f\" aria-live=\"polite\"></div></div>"); stage.appendChild(box);
+      var o=box.querySelector(".o"), f=box.querySelector(".f");
+      S2.forEach(function(op,i){ var l=document.createElement("label"); l.className="opt"; l.innerHTML="<input type=\"checkbox\" value=\""+i+"\"><span>"+op[0]+"</span>"; o.appendChild(l); });
+      var go=document.createElement("button"); go.className="btn"; go.textContent="Перевірити"; o.parentNode.insertBefore(go,f);
+      go.addEventListener("click", function(){
+        var ch={}; o.querySelectorAll("input:checked").forEach(function(i){ch[i.value]=true;});
+        var pts=0, html="";
+        S2.forEach(function(op,i){ var p=!!ch[i], c=op[1], tag;
+          if(c==="good"){ if(p){pts++;tag="Так.";} else tag="Пропущено."; }
+          else if(c==="bad"){ if(p){pts--;tag="Ні.";} else tag="Правильно, що не обрано."; }
+          else tag=p?"Спірно.":"Нейтрально.";
+          html+="<div class=\"fb "+(c==="mid"?"mid":(c==="good"?(p?"good":"bad"):(p?"bad":"good")))+"\"><span class=\"tag\">"+op[0]+": "+tag+"</span> "+op[2]+"</div>"; });
+        sc.s2=Math.max(0,pts);
+        f.innerHTML=html+"<p><strong>Бали за крок: "+sc.s2+" з 4.</strong></p>";
+        o.querySelectorAll("input").forEach(function(i){i.disabled=true;}); go.hidden=true;
+        var nx=document.createElement("button"); nx.className="btn"; nx.textContent="Скласти план"; f.appendChild(nx); nx.addEventListener("click", st3);
+      });
+      box.scrollIntoView({behavior:"smooth",block:"start"});
+    }
+    function st3(){
+      var box=el("<div class=\"card\"><p class=\"progress\">Крок 3 з 3</p><h3>План підтримки мотивації: оберіть рівно 3 дії</h3><p class=\"hint\">Обрано: <span class=\"cnt\">0</span> з 3</p><div class=\"o\"></div><div class=\"f\" aria-live=\"polite\"></div></div>"); stage.appendChild(box);
+      var o=box.querySelector(".o"), f=box.querySelector(".f"), cnt=box.querySelector(".cnt");
+      S3.forEach(function(op,i){ var l=document.createElement("label"); l.className="opt"; l.innerHTML="<input type=\"checkbox\" value=\""+i+"\"><span>"+op[0]+"</span>"; o.appendChild(l); });
+      var go=document.createElement("button"); go.className="btn"; go.textContent="Перевірити"; go.disabled=true; o.parentNode.insertBefore(go,f);
+      o.addEventListener("change", function(){ var n=o.querySelectorAll("input:checked").length; cnt.textContent=n; o.querySelectorAll("input:not(:checked)").forEach(function(i){i.disabled=n>=3;}); go.disabled=n!==3; });
+      go.addEventListener("click", function(){
+        var html="", pts=0;
+        o.querySelectorAll("input:checked").forEach(function(i){ var op=S3[+i.value]; if(op[1]==="good") pts+=2; html+="<div class=\"fb "+op[1]+"\"><span class=\"tag\">"+(op[1]==="good"?"Так":(op[1]==="mid"?"Спірно":"Ні"))+".</span> "+op[0]+" "+op[2]+"</div>"; });
+        sc.s3=pts;
+        var missed=S3.filter(function(op,i){return op[1]==="good" && !o.querySelector("input[value=\""+i+"\"]").checked;});
+        if(missed.length) html+="<p class=\"hint\">Ще влучні дії, які ви не обрали: "+missed.map(function(m){return m[0].replace(/\.$/,"");}).join("; ")+".</p>";
+        f.innerHTML=html; o.querySelectorAll("input").forEach(function(i){i.disabled=true;}); go.hidden=true;
+        var fin=document.createElement("button"); fin.className="btn"; fin.textContent="Показати підсумок"; f.appendChild(fin); fin.addEventListener("click", finish);
+      });
+      box.scrollIntoView({behavior:"smooth",block:"start"});
+    }
+    function finish(){
+      var t=sc.s1+sc.s2+sc.s3, lvl=t>=10?"Сильна діагностика й план":(t>=7?"Добре, є над чим подумати":"Варто повторити лекційні чинники");
+      var c=el("<div class=\"card\"><h3>Підсумок кейсу</h3><p class=\"score\">"+t+" з 12</p><p><strong>"+lvl+".</strong> Діагностика: "+sc.s1+" з 2; причини: "+sc.s2+" з 4; план: "+sc.s3+" з 6.</p><p>Гігієнічні чинники (умови, оплата) тут нормальні, а просіли мотиватори: визнання, розвиток, довіра й автономія, а також справедливість. Тому підвищення оплати чи посилення контролю не розв’язали б проблему.</p><h3>Обговоріть у групі</h3><ul><li>Які ще дані ви б зібрали?</li><li>Чи можна гарантувати анонімність в анкеті для 8 людей?</li><li>Який показник покаже за 3 місяці, що план спрацював?</li></ul><div class=\"row\"><button class=\"btn ghost\" data-act=\"again\">Пройти кейс ще раз</button></div></div>");
+      stage.appendChild(c);
+      R[b.id]={sum:"Кейс «Сервіс+»: "+t+" з 12.",score:t}; updateOverall();
+      c.querySelector("[data-act=again]").addEventListener("click", function(){ delete R[b.id]; st1(); updateOverall(); window.scrollTo({top:0}); });
+      nextBtn(b.id,c); c.scrollIntoView({behavior:"smooth",block:"start"});
+    }
+    st1();
+  }
+
+  /* ---------- Підсумок ---------- */
+  function renderSummary(){
+    var p=panels.sum, lines=[], done=BLOCKS.filter(function(b){return R[b.id];});
+    p.innerHTML="<h2>Мій мотиваційний паспорт</h2>";
+    if(!done.length){ p.innerHTML+="<p class=\"note\">Пройдіть хоча б один блок, і тут з’явиться зведення.</p>"; return; }
+    done.forEach(function(b){ lines.push(R[b.id].sum); });
+    var txt=lines.join("\n");
+    var html="<pre id=\"sumTxt\"></pre>";
+    html+="<div class=\"card\"><h3>Для рефлексії</h3><ul><li>Який чинник із лекції найбільше впливає на вашу мотивацію сьогодні?</li><li>Чого вам бракує з чотирьох типів потреб: розвитку, приналежності, автономії чи справедливих умов?</li><li>Яка одна дія допоможе вам цього тижня?</li></ul></div>";
+    html+="<p class=\"hint\">Це навчальний інструмент, а не діагностика. Якщо результати вас непокоять, поговоріть із психологом. Безкоштовна цілодобова лінія психологічної підтримки «Людина в біді»: 0 800 210 160.</p>";
+    html+="<div class=\"row\"><button class=\"btn\" id=\"copySum\">Скопіювати зведення</button></div><p class=\"hint\" id=\"copyMsg\" aria-live=\"polite\"></p>";
+    p.insertAdjacentHTML("beforeend",html);
+    p.querySelector("#sumTxt").textContent=txt;
+    p.querySelector("#copySum").addEventListener("click", function(){
+      var m=p.querySelector("#copyMsg");
+      function ok(){ m.textContent="Скопійовано. Можна вставити в чат або документ групи."; }
+      function fail(){ m.textContent="Виділіть текст вище й скопіюйте вручну."; }
+      try{ navigator.clipboard.writeText(txt).then(ok,fail); }catch(e){ fail(); }
+    });
+  }
+
+  /* ---------- Старт ---------- */
+  BLOCKS.forEach(function(b){
+    var p=panels[b.id];
+    if(b.type==="likert") buildLikert(b,p);
+    else if(b.type==="causes") buildCauses(b,p);
+    else if(b.type==="mcq") buildMcq(b,p);
+    else if(b.type==="case") buildCase(b,p);
+  });
+  updateOverall(); show("b1");
+})();
+</script>
+</body>
+</html>
